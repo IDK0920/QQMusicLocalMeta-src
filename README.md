@@ -2,8 +2,6 @@
 
 让 **QQ音乐 Android** 显示你自己导入的本地音乐中**内嵌的歌词**——即使这首歌在它的云端曲库里根本查不到。
 
-> Xposed / LSPosed 模块 · 目标：`com.tencent.qqmusic` 20.9.5.8（versionCode 7508）
-> 只读取你自己的本地音频文件，**不涉及 VIP / 付费 / DRM 内容**。
 ---
 
 ## 目录
