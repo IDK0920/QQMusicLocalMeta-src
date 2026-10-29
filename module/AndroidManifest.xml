@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dsh.qqmlocal"
+    android:versionCode="1"
+    android:versionName="0.2">
+
+    <application
+        android:label="QQ音乐本地元数据"
+        android:allowBackup="false"
+        android:hasCode="true">
+
+        <meta-data android:name="xposedmodule" android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="让 QQ音乐 对云端没有的本地歌曲也能用文件内嵌的封面/歌词。v0.2 = 内嵌歌词写入 QQ音乐 歌词缓存" />
+        <meta-data android:name="xposedminversion" android:value="93" />
+    </application>
+
+</manifest>
