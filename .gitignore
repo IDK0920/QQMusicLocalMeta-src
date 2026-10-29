@@ -1,0 +1,9 @@
+build/
+*.class
+*.dex
+*.idsig
+libs/
+work/
+.toolchain/
+.DS_Store
+Thumbs.db
