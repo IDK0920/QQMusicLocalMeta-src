@@ -4,9 +4,6 @@
 
 > Xposed / LSPosed 模块 · 目标：`com.tencent.qqmusic` 20.9.5.8（versionCode 7508）
 > 只读取你自己的本地音频文件，**不涉及 VIP / 付费 / DRM 内容**。
-
-![歌词页](docs/images/lyrics.jpg)
-
 ---
 
 ## 目录
@@ -42,7 +39,7 @@ QQ音乐 自己其实**已经读了**文件里内嵌的歌词标签——但它�
 |---|---|---|
 | 歌名 / 歌手 / 专辑名 | QQ音乐 自己按文件名解析 | ✅ 原生支持，模块不参与 |
 | **歌词** | 音频文件内嵌的歌词标签 | ✅ 本模块提供 |
-| 封面 | — | ❌ 未支持（见[已知限制](#已知限制)） |
+| 封面 | — | ❌ 未支持 |
 
 歌词出现在两处，均已验证：
 
@@ -82,9 +79,6 @@ metaflac --set-tag="LYRICS=$(cat song.lrc)" "歌手 - 歌名.flac"
 
 1. **「云端歌 → 上一首」这条路径**，独立歌词页会显示成「歌曲信息」面板（作曲/语种/流派）。
    此时**迷你歌词行仍然正常**。其它路径（点歌播放、下一首、启动后直接播本地歌）都正常。
-2. **封面不显示**，播放页是空唱盘。原因与所有尝试记录见
-   [docs/TECHNICAL_NOTES.md](docs/TECHNICAL_NOTES.md) 第 38~44 节。
-3. 只处理**本地文件**；云歌曲完全不受影响（包括它自己的双语 / 逐色歌词）。
 4. 只在 `com.tencent.qqmusic` **20.9.5.8** 上验证过。类名混淆可能随版本变化。
 
 ## 原理简述
@@ -134,9 +128,6 @@ QQ音乐 的本地歌会被分配一个「伪歌曲 ID」，歌词走 `business.
 ├── tools/
 │   ├── pack.py / dumpclass.py / mkfixture.py
 │   └── selftest/                   纯 Java 自测（真实 FLAC 解析）
-├── docs/
-│   ├── TECHNICAL_NOTES.md          44 节完整逆向记录
-│   └── images/
 ├── build.sh
 └── dist/                           构建产物
 ```
@@ -158,19 +149,6 @@ bash tools/test.sh   # 自测（无需手机，纯 Java）
 
 ## 常见问题
 
-**Q：装了没效果？**
-先确认三件事：LSPosed 作用域勾了 QQ音乐、装完**强停过** App、日志目录里能看到版本横幅：
-
-```
-/sdcard/Android/data/com.tencent.qqmusic/files/qqmusic/qqmlocal/diag.txt
-```
-
-**Q：为什么文件写到 `Android/data/...` 而不是 `/sdcard`？**
-目标 App 是 `targetSdk 30`，在 Android 11+ 上无法写任意 `/sdcard` 路径（会静默失败）。
-模块早期就踩过这个坑，现在统一走 App 私有目录。
-
-**Q：会不会影响云歌曲的歌词？**
-不会。每次匹配都要求「本地文件名 == 当前歌曲名」，不匹配就完全不介入。
 
 **Q：能显示双语歌词吗？**
 内嵌标签里有 `LYRICS_ZH` 之类时，理论上可以写到 `.translrc`，但尚未实现。
@@ -182,8 +160,3 @@ bash tools/test.sh   # 自测（无需手机，纯 Java）
 - 修改的是 App 运行时行为，可能随 App 版本更新失效
 - 使用本模块产生的任何后果由使用者自行承担
 
-## 致谢
-
-- [LSPosed](https://github.com/LSPosed/LSPosed) / [XposedBridge](https://api.xposed.info/)
-- 逆向分析：`adb`、`baksmali`、REA MCP 工具链
-- 测试素材：各同人社团的无损转录作品
